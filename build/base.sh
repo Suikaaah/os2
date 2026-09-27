@@ -19,9 +19,8 @@ dnf install \
     https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VERSION}.noarch.rpm \
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_VERSION}.noarch.rpm
 
-# Terra carries its key inside terra-release itself, so that one package cannot
-# be checked before it is installed. Everything from Terra after it can be.
-dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+dnf copr enable alternateved/keyd
+dnf copr enable scottames/ghostty
 
 # Flathub
 curl -o /etc/flatpak/remotes.d/flathub.flatpakrepo \
@@ -42,12 +41,14 @@ packages=(
     ghostty
     ibus-mozc
     xdg-terminal-exec
+    input-remapper
     # Development
     gh
-    just
-    nodejs24
+    fzf
     rustup
-    uv
+    opam
+    neovim
+    keyd
     # Gaming
     steam
 )
@@ -60,4 +61,5 @@ dnf install "${packages[@]}"
 # list, and with ptyxis gone it falls back to the sole TerminalEmulator entry
 # left. Nothing requires ptyxis, so this removes that package and nothing else.
 dnf remove ptyxis
+dnf remove firefox
 

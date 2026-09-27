@@ -1,6 +1,6 @@
-# yellowtail
+# os2
 
-[![Build and Push the Container Images](https://github.com/xiu-heng-hua/yellowtail/actions/workflows/build.yml/badge.svg)](https://github.com/xiu-heng-hua/yellowtail/actions/workflows/build.yml)
+[![Build and Push the Container Images](https://github.com/Suikaaah/os2/actions/workflows/build.yml/badge.svg)](https://github.com/Suikaaah/os2/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/)
@@ -8,7 +8,7 @@ image with a custom toolset already baked in.
 
 Silverblue is an image-based desktop: the operating system is one immutable
 image that you boot into, and updating means downloading a new image rather than
-upgrading individual packages. yellowtail is that image, rebuilt every night, so
+upgrading individual packages. os2 is that image, rebuilt every night, so
 the software below is part of the OS instead of something you layer on top of it
 after every install.
 
@@ -16,8 +16,8 @@ after every install.
 
 | Image | Pull from | Use it when |
 | --- | --- | --- |
-| `yellowtail` | `ghcr.io/xiu-heng-hua/yellowtail` | You use Intel or AMD graphics. |
-| `yellowtail-nvidia` | `ghcr.io/xiu-heng-hua/yellowtail-nvidia` | You have an NVIDIA card and want the proprietary driver. |
+| `os2` | `ghcr.io/Suikaaah/os2` | You use Intel or AMD graphics. |
+| `os2-nvidia` | `ghcr.io/Suikaaah/os2-nvidia` | You have an NVIDIA card and want the proprietary driver. |
 
 Every build publishes two tags:
 
@@ -70,17 +70,17 @@ kernel and blacklists `nouveau` and `nova_core`.
 From an existing Fedora Silverblue installation:
 
 ```sh
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/xiu-heng-hua/yellowtail:latest
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/Suikaaah/os2:latest
 sudo systemctl reboot
 ```
 
-For the NVIDIA variant, use `ghcr.io/xiu-heng-hua/yellowtail-nvidia:latest`
+For the NVIDIA variant, use `ghcr.io/Suikaaah/os2-nvidia:latest`
 instead.
 
 On a system that already ships `bootc`, this is equivalent:
 
 ```sh
-sudo bootc switch --transport registry ghcr.io/xiu-heng-hua/yellowtail:latest
+sudo bootc switch --transport registry ghcr.io/Suikaaah/os2:latest
 sudo systemctl reboot
 ```
 
@@ -124,7 +124,7 @@ sudo systemctl reboot
 To follow one day's build rather than `latest`, rebase onto a dated tag:
 
 ```sh
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/xiu-heng-hua/yellowtail:2026-08-01
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/Suikaaah/os2:2026-08-01
 ```
 
 ## Verifying the images
@@ -133,7 +133,7 @@ Published images are signed with [cosign](https://github.com/sigstore/cosign).
 Verify a pull against the `cosign.pub` in this repository:
 
 ```sh
-cosign verify --key cosign.pub --new-bundle-format ghcr.io/xiu-heng-hua/yellowtail:latest
+cosign verify --key cosign.pub --new-bundle-format ghcr.io/Suikaaah/os2:latest
 ```
 
 Signatures are attached as Sigstore bundles rather than legacy `.sig` tags, so
@@ -171,20 +171,20 @@ You need `podman` (or `buildah`) and enough disk for a full Silverblue image.
 Build with root so the result can be inspected and mounted the same way CI does:
 
 ```sh
-sudo podman build --file Containerfile --tag yellowtail .
+sudo podman build --file Containerfile --tag os2 .
 ```
 
 The NVIDIA variant builds on top of the image you just made, so build the base
 first:
 
 ```sh
-sudo podman build --file Containerfile.nvidia --tag yellowtail-nvidia .
+sudo podman build --file Containerfile.nvidia --tag os2-nvidia .
 ```
 
 To build against a different Fedora release, override the build argument:
 
 ```sh
-sudo podman build --build-arg FEDORA_VERSION=45 --file Containerfile --tag yellowtail .
+sudo podman build --build-arg FEDORA_VERSION=45 --file Containerfile --tag os2 .
 ```
 
 Each Containerfile ends with `bootc container lint`, so a build that succeeds is
