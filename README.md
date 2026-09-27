@@ -44,11 +44,7 @@ On top of stock Silverblue:
   that names Ptyxis and not Ghostty, so the image also carries
   `xdg-terminal-exec` — the first name on that list, and the one that then goes
   looking for whichever terminal is actually installed.
-- **Keyboard** — a custom French (QWERTY) layout. The layout itself is part of
-  the image, at `/usr/share/X11/xkb/symbols/custom`, next to the layouts Fedora
-  ships. It is already selected as the default alongside Mozc, and the login
-  screen uses it too, with Caps Lock and Ctrl swapped in both. Nothing needs
-  setting up after installing.
+- **Keyboard** — Caps Lock and Ctrl are swapped.
 
   GNOME Settings lists it as "A user-defined custom Layout": `custom` is the
   name `xkeyboard-config` reserves for exactly this, so nothing has to be
@@ -199,7 +195,6 @@ also a valid bootable container.
 ```
 Containerfile           the main image
 Containerfile.nvidia    the NVIDIA variant, built from the main image
-xkb/custom              the French (QWERTY) keyboard layout the image defaults to
 build/base.sh           repositories, packages and desktop defaults for the main image
 build/nvidia-kmod.sh    builds nvidia-kmod against the image's kernel
 build/nvidia.sh         installs the built driver and blacklists nouveau

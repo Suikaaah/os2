@@ -23,16 +23,6 @@ dnf install \
 # be checked before it is installed. Everything from Terra after it can be.
 dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 
-# Claude Code
-cat > /etc/yum.repos.d/claude-code.repo <<'EOF'
-[claude-code]
-name=Claude Code
-baseurl=https://downloads.claude.ai/claude-code/rpm/stable
-enabled=1
-gpgcheck=1
-gpgkey=https://downloads.claude.ai/keys/claude-code.asc
-EOF
-
 # Flathub
 curl -o /etc/flatpak/remotes.d/flathub.flatpakrepo \
     https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -51,11 +41,8 @@ packages=(
     # Desktop
     ghostty
     ibus-mozc
-    jetbrains-mono-fonts
     xdg-terminal-exec
     # Development
-    claude-code
-    code
     gh
     just
     nodejs24
@@ -74,32 +61,3 @@ dnf install "${packages[@]}"
 # left. Nothing requires ptyxis, so this removes that package and nothing else.
 dnf remove ptyxis
 
-# Desktop defaults
-
-# The login screen takes its keyboard from systemd-localed, not from any user's
-# settings, so it needs this file as well as the schema default below. localectl
-# would normally write it, but that needs a running localed, which a container
-# build does not have. Nothing in the base image creates xorg.conf.d, because
-# nothing has configured a keyboard yet.
-mkdir -p /etc/X11/xorg.conf.d
-
-cat > /etc/X11/xorg.conf.d/00-keyboard.conf <<'EOF'
-Section "InputClass"
-        Identifier "system-keyboard"
-        MatchIsKeyboard "on"
-        Option "XkbLayout" "custom"
-        Option "XkbOptions" "ctrl:swapcaps"
-EndSection
-EOF
-
-# The custom layout, and Caps Lock swapped with Ctrl. These are schema defaults
-# rather than any user's dconf, so they apply to a fresh account and can still
-# be changed with gsettings. glib reads .override files in filename order and
-# the last one wins, so zz- puts this after the overrides Fedora ships.
-cat > /usr/share/glib-2.0/schemas/zz-yellowtail.gschema.override <<'EOF'
-[org.gnome.desktop.input-sources]
-sources=[('xkb','custom'),('ibus','mozc-jp')]
-xkb-options=['ctrl:swapcaps']
-EOF
-
-glib-compile-schemas /usr/share/glib-2.0/schemas

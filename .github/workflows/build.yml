@@ -47,14 +47,14 @@ jobs:
         run: |
           sudo buildah build \
             --file Containerfile \
-            --tag yellowtail \
+            --tag os2 \
             .
 
       - name: Build the nvidia variant
         run: |
           sudo buildah build \
             --file Containerfile.nvidia \
-            --tag yellowtail-nvidia \
+            --tag os2-nvidia \
             .
 
       - name: Log in to GHCR
@@ -68,12 +68,12 @@ jobs:
         id: rechunk-main
         uses: hhd-dev/rechunk@v1.2.4
         with:
-          ref: localhost/yellowtail
-          prev-ref: ${{ env.REGISTRY }}/yellowtail:latest
+          ref: localhost/os2
+          prev-ref: ${{ env.REGISTRY }}/os2:latest
           version: ${{ env.BUILD_DATE }}
           revision: ${{ github.sha }}
           labels: |
-            org.opencontainers.image.title=yellowtail
+            org.opencontainers.image.title=os2
             org.opencontainers.image.description=Fedora Silverblue with a custom toolset baked in.
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.licenses=MIT
@@ -91,7 +91,7 @@ jobs:
             skopeo copy \
               --digestfile "${RUNNER_TEMP}/digest-main" \
               "${REF}" \
-              "docker://${REGISTRY}/yellowtail:${tag}"
+              "docker://${REGISTRY}/os2:${tag}"
           done
           echo "digest=$(cat ${RUNNER_TEMP}/digest-main)" >> ${GITHUB_OUTPUT}
 
@@ -102,12 +102,12 @@ jobs:
         id: rechunk-nvidia
         uses: hhd-dev/rechunk@v1.2.4
         with:
-          ref: localhost/yellowtail-nvidia
-          prev-ref: ${{ env.REGISTRY }}/yellowtail-nvidia:latest
+          ref: localhost/os2-nvidia
+          prev-ref: ${{ env.REGISTRY }}/os2-nvidia:latest
           version: ${{ env.BUILD_DATE }}
           revision: ${{ github.sha }}
           labels: |
-            org.opencontainers.image.title=yellowtail-nvidia
+            org.opencontainers.image.title=os2-nvidia
             org.opencontainers.image.description=Fedora Silverblue with the proprietary NVIDIA driver and a custom toolset baked in.
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.licenses=MIT
@@ -125,7 +125,7 @@ jobs:
             skopeo copy \
               --digestfile "${RUNNER_TEMP}/digest-nvidia" \
               "${REF}" \
-              "docker://${REGISTRY}/yellowtail-nvidia:${tag}"
+              "docker://${REGISTRY}/os2-nvidia:${tag}"
           done
           echo "digest=$(cat ${RUNNER_TEMP}/digest-nvidia)" >> ${GITHUB_OUTPUT}
 
@@ -145,5 +145,5 @@ jobs:
           DIGEST_NVIDIA: ${{ steps.push-nvidia.outputs.digest }}
         run: |
           set -euo pipefail
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/yellowtail@${DIGEST}"
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/yellowtail-nvidia@${DIGEST_NVIDIA}"
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/os2@${DIGEST}"
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/os2-nvidia@${DIGEST_NVIDIA}"
