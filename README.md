@@ -1,5 +1,7 @@
 # os2
 
+Shout out to Xiu
+
 [![Build and Push the Container Images](https://github.com/Suikaaah/os2/actions/workflows/build.yml/badge.svg)](https://github.com/Suikaaah/os2/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -34,26 +36,18 @@ newer image. Today's can still move that way; any earlier one is settled.
 
 On top of stock Silverblue:
 
-- **Repositories** — RPM Fusion (free and nonfree), [Terra](https://terra.fyralabs.com/),
+- **Repositories** — RPM Fusion (free and nonfree),
   Flathub, and the vendor repositories for the packages below.
 - **Desktop** — [Ghostty](https://ghostty.org/) as the one terminal, in place of
-  the Ptyxis that Silverblue ships; `ibus-mozc` for Japanese input, and JetBrains
-  Mono.
+  the Ptyxis that Silverblue ships; `ibus-mozc` for Japanese input.
 
   GLib picks the terminal for a `Terminal=true` desktop entry off a fixed list
   that names Ptyxis and not Ghostty, so the image also carries
   `xdg-terminal-exec` — the first name on that list, and the one that then goes
   looking for whichever terminal is actually installed.
-- **Keyboard** — Caps Lock and Ctrl are swapped.
-
-  GNOME Settings lists it as "A user-defined custom Layout": `custom` is the
-  name `xkeyboard-config` reserves for exactly this, so nothing has to be
-  registered for the layout to be selectable. Change either default with
-  `gsettings` on `org.gnome.desktop.input-sources`; `gsettings reset` restores
-  them, since they are now the defaults.
-- **Development** — [Claude Code](https://claude.com/claude-code), Visual Studio
-  Code, the GitHub CLI, [`just`](https://just.systems/), `rustup`, Node.js 24
-  and [`uv`](https://docs.astral.sh/uv/).
+- **IO** — `keyd`, `input-remapper`
+- **Development** — `bubblewrap`, `gh`, `fzf`, `rustup`, `opam`, `neovim`,
+  `python3-neovim`
 - **Gaming and media** — Steam, and full `ffmpeg` swapped in for `ffmpeg-free`
   so hardware and patent-encumbered codecs work.
 

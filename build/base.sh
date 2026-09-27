@@ -44,6 +44,7 @@ packages=(
     keyd
     input-remapper
     # Development
+    bubblewrap
     gh
     fzf
     rustup
