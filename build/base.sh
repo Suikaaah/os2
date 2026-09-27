@@ -41,6 +41,7 @@ packages=(
     ghostty
     ibus-mozc
     xdg-terminal-exec
+    keyd
     input-remapper
     # Development
     gh
@@ -48,7 +49,7 @@ packages=(
     rustup
     opam
     neovim
-    keyd
+    python3-neovim
     # Gaming
     steam
 )
