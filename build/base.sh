@@ -44,7 +44,6 @@ packages=(
     keyd
     input-remapper
     # Development
-    bubblewrap
     gh
     fzf
     rustup
@@ -56,6 +55,17 @@ packages=(
 )
 
 dnf install "${packages[@]}"
+
+# Claude
+tee /etc/yum.repos.d/claude-code.repo <<'EOF'
+[claude-code]
+name=Claude Code
+baseurl=https://downloads.claude.ai/claude-code/rpm/stable
+enabled=1
+gpgcheck=1
+gpgkey=https://downloads.claude.ai/keys/claude-code.asc
+EOF
+dnf install claude-code
 
 # Ghostty replaces the terminal Silverblue ships. GLib picks the terminal for a
 # Terminal=true desktop entry off a fixed list that names ptyxis and not
