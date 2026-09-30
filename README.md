@@ -18,8 +18,8 @@ after every install.
 
 | Image | Pull from | Use it when |
 | --- | --- | --- |
-| `os2` | `ghcr.io/Suikaaah/os2` | You use Intel or AMD graphics. |
-| `os2-nvidia` | `ghcr.io/Suikaaah/os2-nvidia` | You have an NVIDIA card and want the proprietary driver. |
+| `os2` | `ghcr.io/suikaaah/os2` | You use Intel or AMD graphics. |
+| `os2-nvidia` | `ghcr.io/suikaaah/os2-nvidia` | You have an NVIDIA card and want the proprietary driver. |
 
 Every build publishes two tags:
 
@@ -64,17 +64,17 @@ kernel and blacklists `nouveau` and `nova_core`.
 From an existing Fedora Silverblue installation:
 
 ```sh
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/Suikaaah/os2:latest
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/suikaaah/os2:latest
 sudo systemctl reboot
 ```
 
-For the NVIDIA variant, use `ghcr.io/Suikaaah/os2-nvidia:latest`
+For the NVIDIA variant, use `ghcr.io/suikaaah/os2-nvidia:latest`
 instead.
 
 On a system that already ships `bootc`, this is equivalent:
 
 ```sh
-sudo bootc switch --transport registry ghcr.io/Suikaaah/os2:latest
+sudo bootc switch --transport registry ghcr.io/suikaaah/os2:latest
 sudo systemctl reboot
 ```
 
@@ -118,7 +118,7 @@ sudo systemctl reboot
 To follow one day's build rather than `latest`, rebase onto a dated tag:
 
 ```sh
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/Suikaaah/os2:2026-08-01
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/suikaaah/os2:2026-08-01
 ```
 
 ## Verifying the images
@@ -127,7 +127,7 @@ Published images are signed with [cosign](https://github.com/sigstore/cosign).
 Verify a pull against the `cosign.pub` in this repository:
 
 ```sh
-cosign verify --key cosign.pub --new-bundle-format ghcr.io/Suikaaah/os2:latest
+cosign verify --key cosign.pub --new-bundle-format ghcr.io/suikaaah/os2:latest
 ```
 
 Signatures are attached as Sigstore bundles rather than legacy `.sig` tags, so
