@@ -41,6 +41,7 @@ packages=(
     ghostty
     ibus-mozc
     xdg-terminal-exec
+    # IO
     keyd
     input-remapper
     # Development
@@ -67,11 +68,27 @@ gpgkey=https://downloads.claude.ai/keys/claude-code.asc
 EOF
 dnf install claude-code
 
+# Tailscale
+tee /etc/yum.repos.d/tailscale.repo <<'EOF'
+[tailscale-stable]
+name=Tailscale stable
+baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
+enabled=1
+type=rpm
+repo_gpgcheck=1
+gpgcheck=1
+gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+EOF
+dnf install tailscale
+systemctl enable tailscaled
+
 # Ghostty replaces the terminal Silverblue ships. GLib picks the terminal for a
 # Terminal=true desktop entry off a fixed list that names ptyxis and not
 # ghostty, so xdg-terminal-exec above stands in: it is the first name on that
 # list, and with ptyxis gone it falls back to the sole TerminalEmulator entry
 # left. Nothing requires ptyxis, so this removes that package and nothing else.
 dnf remove ptyxis
+
+# No browser is baked in; one can be installed from Flathub instead.
 dnf remove firefox
 

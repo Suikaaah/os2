@@ -37,7 +37,9 @@ newer image. Today's can still move that way; any earlier one is settled.
 On top of stock Silverblue:
 
 - **Repositories** — RPM Fusion (free and nonfree),
-  Flathub, and the vendor repositories for the packages below.
+  Flathub, and the vendor repositories for the packages below (COPRs for
+  `keyd` and Ghostty, Anthropic's repository for Claude Code, Tailscale's
+  repository).
 - **Desktop** — [Ghostty](https://ghostty.org/) as the one terminal, in place of
   the Ptyxis that Silverblue ships; `ibus-mozc` for Japanese input.
 
@@ -45,9 +47,14 @@ On top of stock Silverblue:
   that names Ptyxis and not Ghostty, so the image also carries
   `xdg-terminal-exec` — the first name on that list, and the one that then goes
   looking for whichever terminal is actually installed.
+
+  Firefox is removed as well, so the image ships without a browser; install
+  one from Flathub.
 - **IO** — `keyd`, `input-remapper`
-- **Development** — `bubblewrap`, `gh`, `fzf`, `rustup`, `opam`, `neovim`,
-  `python3-neovim`
+- **Networking** — [Tailscale](https://tailscale.com/), with `tailscaled`
+  enabled; run `sudo tailscale up` once to join your tailnet.
+- **Development** — `gh`, `fzf`, `rustup`, `opam`, `neovim`, `python3-neovim`,
+  and [Claude Code](https://claude.com/claude-code) from its `latest` channel
 - **Gaming and media** — Steam, and full `ffmpeg` swapped in for `ffmpeg-free`
   so hardware and patent-encumbered codecs work.
 
@@ -115,6 +122,9 @@ sudo rpm-ostree rebase fedora:fedora/44/x86_64/silverblue
 sudo systemctl reboot
 ```
 
+Replace `44` with the release the image was built from (`FEDORA_VERSION` in the
+`Containerfile`).
+
 To follow one day's build rather than `latest`, rebase onto a dated tag:
 
 ```sh
@@ -131,7 +141,8 @@ cosign verify --key cosign.pub --new-bundle-format ghcr.io/suikaaah/os2:latest
 ```
 
 Signatures are attached as Sigstore bundles rather than legacy `.sig` tags, so
-this needs cosign 2.6 or newer and the `--new-bundle-format` flag.
+this needs cosign 2.6 or newer. cosign 3 reads bundles by default; on 2.x the
+`--new-bundle-format` flag is what makes it look for one.
 
 Rebasing still uses the `ostree-unverified-registry:` transport shown above.
 rpm-ostree only checks a signature when the image itself carries a matching
@@ -148,7 +159,7 @@ podman run --rm --user 0:0 \
   -e GITHUB_TOKEN="$(gh auth token)" \
   -e COSIGN_PASSWORD="$(head -c 32 /dev/urandom | base64)" \
   -v .:/work:z -w /work \
-  gcr.io/projectsigstore/cosign:v2.4.3 \
+  gcr.io/projectsigstore/cosign:v3.0.6 \
   generate-key-pair github://<owner>/<repo>
 ```
 
@@ -191,7 +202,7 @@ Containerfile           the main image
 Containerfile.nvidia    the NVIDIA variant, built from the main image
 build/base.sh           repositories, packages and desktop defaults for the main image
 build/nvidia-kmod.sh    builds nvidia-kmod against the image's kernel
-build/nvidia.sh         installs the built driver and blacklists nouveau
+build/nvidia.sh         installs the built driver and blacklists nouveau and nova_core
 .github/workflows/build.yml
                         nightly build, rechunk, push and sign
 ```
