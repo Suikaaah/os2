@@ -82,6 +82,16 @@ EOF
 dnf install tailscale
 systemctl enable tailscaled
 
+# Bitwarden CLI. There is no RPM, so this takes the standalone binary from the
+# link Bitwarden redirects to its latest release. /usr/local points into /var
+# on an ostree system, so the binary goes in /usr/bin to be part of the image.
+bw_dir=$(mktemp -d)
+curl -fsSL -o "${bw_dir}/bw.zip" \
+    'https://vault.bitwarden.com/download/?app=cli&platform=linux'
+unzip "${bw_dir}/bw.zip" bw -d "${bw_dir}"
+install -m 0755 "${bw_dir}/bw" /usr/bin/bw
+rm -rf "${bw_dir}"
+
 # Ghostty replaces the terminal Silverblue ships. GLib picks the terminal for a
 # Terminal=true desktop entry off a fixed list that names ptyxis and not
 # ghostty, so xdg-terminal-exec above stands in: it is the first name on that
