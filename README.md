@@ -55,6 +55,8 @@ On top of stock Silverblue:
   enabled; run `sudo tailscale up` once to join your tailnet.
 - **Development** — `gh`, `fzf`, `rustup`, `opam`, `neovim`, `python3-neovim`,
   and [Claude Code](https://claude.com/claude-code) from its `latest` channel
+- **TeX** — TeX Live's `medium` scheme (`texlive-scheme-medium`): LaTeX with
+  the recommended and math collections, pdfTeX, XeTeX, LuaTeX and `latexmk`
 - **Security** — the [Bitwarden CLI](https://bitwarden.com/help/cli/) (`bw`),
   the standalone binary from Bitwarden's latest release
 - **Gaming and media** — Steam, and full `ffmpeg` swapped in for `ffmpeg-free`

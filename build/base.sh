@@ -51,6 +51,8 @@ packages=(
     opam
     neovim
     python3-neovim
+    # TeX
+    texlive-scheme-medium
     # Gaming
     steam
 )
