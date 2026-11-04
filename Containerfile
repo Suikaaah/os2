@@ -1,4 +1,4 @@
-ARG FEDORA_VERSION=44
+ARG FEDORA_VERSION=45
 
 FROM quay.io/fedora/fedora-silverblue:${FEDORA_VERSION}
 
