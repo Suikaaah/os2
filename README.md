@@ -122,11 +122,11 @@ sudo systemctl reboot
 To return to stock Silverblue:
 
 ```sh
-sudo rpm-ostree rebase fedora:fedora/45/x86_64/silverblue
+sudo rpm-ostree rebase fedora:fedora/44/x86_64/silverblue
 sudo systemctl reboot
 ```
 
-Replace `45` with the release the image was built from (`FEDORA_VERSION` in the
+Replace `44` with the release the image was built from (`FEDORA_VERSION` in the
 `Containerfile`).
 
 To follow one day's build rather than `latest`, rebase onto a dated tag:
@@ -193,7 +193,7 @@ sudo podman build --file Containerfile.nvidia --tag os2-nvidia .
 To build against a different Fedora release, override the build argument:
 
 ```sh
-sudo podman build --build-arg FEDORA_VERSION=44 --file Containerfile --tag os2 .
+sudo podman build --build-arg FEDORA_VERSION=45 --file Containerfile --tag os2 .
 ```
 
 Each Containerfile ends with `bootc container lint`, so a build that succeeds is
